@@ -20,7 +20,7 @@ const PostSchema = new mongoose.Schema(
       required: true,
     },
     categories: {
-      type: Array,
+      type: [String], // Ensure this is an array of strings
       required: false,
     },
   },

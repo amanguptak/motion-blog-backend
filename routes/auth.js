@@ -1,6 +1,11 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
+const generateToken = require("../utils/generatToken");
+
+// Middleware to use cookie parser
+router.use(cookieParser());
 
 // REGISTER
 router.post("/register", async (req, res) => {
@@ -14,7 +19,10 @@ router.post("/register", async (req, res) => {
     });
 
     const user = await newUser.save();
-    res.status(200).json(user);
+
+    // Generate token
+    const token = generateToken(user);
+    res.cookie('token', token, { httpOnly: true }).status(200).json({ message: 'User registered successfully', user });
   } catch (err) {
     res.status(500).json({ message: "Internal server error", error: err });
   }
@@ -33,11 +41,17 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Wrong credentials!" });
     }
 
+    // Generate token
+    const token = generateToken(user);
     const { password, ...others } = user._doc;
-    return res.status(200).json(others);
+    res.cookie('token', token, { httpOnly: true }).status(200).json({ message: 'Logged in successfully', user: others });
   } catch (err) {
     return res.status(500).json({ message: "Internal server error", error: err });
   }
+});
+
+router.post("/logout", (req, res) => {
+  res.clearCookie('token').status(200).json({ message: 'Logged out successfully' });
 });
 
 module.exports = router;

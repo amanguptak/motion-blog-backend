@@ -4,12 +4,13 @@ const Category = require("../models/Category");
 const verifyToken = require("../middleware/verifytoken");
 
 // CREATE POST
-// CREATE POST
 router.post("/", verifyToken, async (req, res) => {
-  // Assign the username from the token to the new post
   const newPost = new Post({
-    ...req.body,
-    username: req.user.username // Ensure the username is assigned from the authenticated user
+    username: req.user.username, // Ensure the username is assigned from the authenticated user
+    title: req.body.title,
+    desc: req.body.desc,
+    categories: req.body.categories,
+    photo: req.body.photo
   });
 
   try {

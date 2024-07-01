@@ -49,6 +49,9 @@ router.put("/:id", verifyToken, async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
+    console.log('Post username:', post.username);
+    console.log('User username:', req.user.username);
+
     if (post.username === req.user.username) {
       if (req.body.categories) {
         const categories = req.body.categories.map((cat) => cat.trim());
@@ -77,6 +80,9 @@ router.delete("/:id", verifyToken, async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
+    console.log('Post username:', post.username);
+    console.log('User username:', req.user.username);
+
     if (post.username === req.user.username) {
       await post.delete();
       res.status(200).json("Post has been deleted...");
@@ -103,7 +109,6 @@ router.get("/:id", async (req, res) => {
 
 // GET ALL POSTS
 router.get("/", async (req, res) => {
- 
   const username = req.query.user;
   const catName = req.query.cat;
   try {

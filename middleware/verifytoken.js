@@ -1,8 +1,7 @@
-const jwt = require('jsonwebtoken')
-const User = require("../models/User");
+const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
-dotenv.config()
-const JWT_SECRET = process.env.JWT
+dotenv.config();
+const JWT_SECRET = process.env.JWT;
 
 const verifyToken = (req, res, next) => {
   const token = req.cookies.token;

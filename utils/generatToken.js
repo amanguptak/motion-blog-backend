@@ -1,7 +1,6 @@
-// utils/token.js
 const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
-dotenv.config()
+dotenv.config();
 
 const JWT_SECRET = process.env.JWT; // Replace with your own secret
 

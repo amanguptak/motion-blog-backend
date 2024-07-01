@@ -2,10 +2,11 @@ const router = require("express").Router();
 const User = require("../models/User");
 const Post = require("../models/Post");
 const bcrypt = require("bcrypt");
+const verifyToken = require("../middleware/verifytoken");
 
-//UPDATE
-router.put("/:id", async (req, res) => {
-  if (req.body.userId === req.params.id) {
+// UPDATE
+router.put("/:id", verifyToken, async (req, res) => {
+  if (req.user._id === req.params.id) {
     if (req.body.password) {
       const salt = await bcrypt.genSalt(10);
       req.body.password = await bcrypt.hash(req.body.password, salt);
@@ -27,9 +28,9 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-//DELETE
-router.delete("/:id", async (req, res) => {
-  if (req.body.userId === req.params.id) {
+// DELETE
+router.delete("/:id", verifyToken, async (req, res) => {
+  if (req.user._id === req.params.id) {
     try {
       const user = await User.findById(req.params.id);
       try {
@@ -47,8 +48,8 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-//GET USER
-router.get("/:id", async (req, res) => {
+// GET USER
+router.get("/:id", verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     const { password, ...others } = user._doc;

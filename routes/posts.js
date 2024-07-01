@@ -129,7 +129,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
-GET POST
+// GET POST
 router.get("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);

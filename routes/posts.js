@@ -5,6 +5,7 @@ const verifyToken = require("../middleware/verifytoken");
 
 // CREATE POST
 router.post("/", verifyToken, async (req, res) => {
+
   const newPost = new Post({
     username: req.user.username, // Ensure the username is assigned from the authenticated user
     title: req.body.title,
